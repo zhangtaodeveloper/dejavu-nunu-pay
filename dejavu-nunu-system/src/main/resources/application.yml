@@ -1,0 +1,56 @@
+server:
+  servlet:
+    context-path: /
+  port: 8000
+spring:
+  application:
+    name: dejavu-nunu-system
+  # Datasource configuration
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.31.199:3306/dejavu_nunu?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&useLegacyDatetimeCode=false&useTimezone=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat
+      initialSize: 10
+      maxActive: 100
+      maxWait: 60000
+      minIdle: 10
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: false
+      use-global-data-source-stat: true
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 2000
+      reset-stat-enable: false
+
+
+# MyBatis Plus configuration
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*/*Mapper.xml
+  type-aliases-package: com.mcu32.cbmp.task.ucenter.*.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: id_worker
+      #逻辑删除配置
+      logic-delete-value: "1"
+      logic-not-delete-value: "0"
+
+logging:
+  level:
+    com.dejavu.nunu: debug
+    org.springframework.web: info
+    org.springframework.security: info
+    org.springframework.cloud: info
