@@ -18,6 +18,8 @@ public class NoticeEmailContext {
 
     private NoticeProperties noticeProperties;
 
+    private Long noticeId;
+
     private String context;
 
 

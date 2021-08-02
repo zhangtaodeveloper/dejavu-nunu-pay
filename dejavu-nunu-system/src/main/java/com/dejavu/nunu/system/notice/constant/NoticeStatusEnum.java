@@ -10,8 +10,9 @@ public enum NoticeStatusEnum {
 
     WAIT_SEND("WAIT_SEND", "待发送"),
 
-    SUCCESS_SEND("SUCCESS_SEND", "成功发送");
+    SUCCESS_SEND("SUCCESS_SEND", "成功发送"),
 
+    SUCCESS_CONFIRM("SUCCESS_CONFIRM", "成功确认");
 
     NoticeStatusEnum(String code, String desc) {
         this.code = code;

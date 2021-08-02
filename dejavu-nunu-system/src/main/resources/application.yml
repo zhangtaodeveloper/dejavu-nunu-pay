@@ -50,6 +50,7 @@ mybatis-plus:
       logic-not-delete-value: "0"
 
 notice:
+  notice-url: http://127.0.0.1:8000/notice/confirm/
   email:
     host: smtp.qq.com
     port: 587

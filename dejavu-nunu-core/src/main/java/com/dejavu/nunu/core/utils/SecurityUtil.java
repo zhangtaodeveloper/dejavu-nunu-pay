@@ -12,34 +12,34 @@ public class SecurityUtil {
 
     /**
      * 生成Key
+     *
      * @return
      */
-    public static String generateKey(){
+    public static String generateKey() {
         return IdUtil.simpleUUID();
     }
 
 
     /**
      * 加密
+     *
      * @param key
      * @param obj
      * @return
      */
-    public static String encrypt(String key,Object obj){
-
+    public static String encrypt(String key, Object obj) {
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key.getBytes(StandardCharsets.UTF_8));
-
         String jsonStr = JSONUtil.toJsonStr(obj);
-
         return aes.encryptHex(jsonStr);
 
     }
 
     /**
      * 解密
+     *
      * @return
      */
-    public static String decrypt(String key,String context){
+    public static String decrypt(String key, String context) {
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key.getBytes(StandardCharsets.UTF_8));
         return aes.decryptStr(context);
     }

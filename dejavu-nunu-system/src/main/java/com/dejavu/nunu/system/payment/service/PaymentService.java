@@ -1,6 +1,7 @@
 package com.dejavu.nunu.system.payment.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dejavu.nunu.system.payment.constant.PaymentStatusEnum;
 import com.dejavu.nunu.system.payment.entity.PaymentEntity;
 import com.dejavu.nunu.system.payment.model.PaymentBaseBo;
 
@@ -30,4 +31,16 @@ public interface PaymentService extends IService<PaymentEntity> {
      * @return
      */
     PaymentEntity getByOrderNo(String orderNo);
+
+
+    /**
+     * 更新支付状态
+     *
+     * @param tenantId
+     * @param orderNo
+     * @param status
+     */
+    void updateStatus(Long tenantId, String orderNo, PaymentStatusEnum status);
+
+
 }

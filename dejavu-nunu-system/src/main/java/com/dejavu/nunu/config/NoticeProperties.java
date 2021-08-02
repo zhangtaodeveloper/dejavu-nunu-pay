@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 public class NoticeProperties {
 
 
+    private String noticeUrl;
+
     private Email email;
 
     @Data

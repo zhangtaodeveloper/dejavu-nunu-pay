@@ -13,13 +13,13 @@ import java.util.Date;
 @TableName("notice")
 public class NoticeEntity {
 
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     private Long tenantId;
 
     private String orderNo;
-    
+
     private String context;
 
     private NoticeStatusEnum status;

@@ -43,9 +43,7 @@ public class NoticeEmailWorker implements Runnable {
 
         EmailUtil.sendHtml(mailAccount, toEmailAddress, title, noticeEmailContext.getContext());
 
-        noticeEmailContext.getNoticeService().updateStatus(noticeEmailContext.getTenantEntity().getId(),
-                noticeEmailContext.getPaymentEntity().getOrderNo(),
-                NoticeStatusEnum.SUCCESS_SEND);
+        noticeEmailContext.getNoticeService().updateStatus(noticeEmailContext.getNoticeId(), NoticeStatusEnum.SUCCESS_SEND);
 
     }
 

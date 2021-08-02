@@ -2,6 +2,7 @@ package com.dejavu.nunu.system.payment.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dejavu.nunu.core.exception.BaseException;
 import com.dejavu.nunu.core.utils.SecurityUtil;
@@ -9,6 +10,7 @@ import com.dejavu.nunu.system.global.exception.GlobalLockRepException;
 import com.dejavu.nunu.system.global.service.GlobalLockService;
 import com.dejavu.nunu.system.notice.service.NoticeService;
 import com.dejavu.nunu.system.payment.constant.PaymentConstant;
+import com.dejavu.nunu.system.payment.constant.PaymentStatusEnum;
 import com.dejavu.nunu.system.payment.entity.PaymentEntity;
 import com.dejavu.nunu.system.payment.exception.PaymentException;
 import com.dejavu.nunu.system.payment.mapper.PaymentMapper;
@@ -78,6 +80,17 @@ public class PaymentServiceImpl extends ServiceImpl<PaymentMapper, PaymentEntity
         QueryWrapper<PaymentEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(PaymentEntity::getOrderNo, orderNo);
         return baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public void updateStatus(Long tenantId, String orderNo, PaymentStatusEnum status) {
+        PaymentEntity paymentEntity = new PaymentEntity();
+        paymentEntity.setStatus(status);
+        paymentEntity.setUpdatedTime(new Date());
+        UpdateWrapper<PaymentEntity> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda().eq(PaymentEntity::getTenantId, tenantId);
+        updateWrapper.lambda().eq(PaymentEntity::getOrderNo, orderNo);
+        baseMapper.update(paymentEntity, updateWrapper);
     }
 
 

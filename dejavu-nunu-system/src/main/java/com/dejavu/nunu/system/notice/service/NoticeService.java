@@ -16,9 +16,16 @@ public interface NoticeService extends IService<NoticeEntity> {
     /**
      * 更新状态
      *
-     * @param orderNo
-     * @param noticeStatusEnum
+     * @param noticeId
+     * @param status
      */
-    public void updateStatus(Long tenantId, String orderNo, NoticeStatusEnum noticeStatusEnum);
+    public void updateStatus(Long noticeId, NoticeStatusEnum status);
+
+    /**
+     * 确认收款回调通知
+     *
+     * @param data
+     */
+    public void confirm(Long tenantId, String data);
 
 }
