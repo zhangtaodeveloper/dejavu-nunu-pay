@@ -1,6 +1,7 @@
 package com.dejavu.nunu.system.notice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.dejavu.nunu.system.notice.constant.NoticeStatusEnum;
 import com.dejavu.nunu.system.notice.entity.NoticeEntity;
 
 public interface NoticeService extends IService<NoticeEntity> {
@@ -11,5 +12,13 @@ public interface NoticeService extends IService<NoticeEntity> {
      * @param orderNo
      */
     public void send(String orderNo);
+
+    /**
+     * 更新状态
+     *
+     * @param orderNo
+     * @param noticeStatusEnum
+     */
+    public void updateStatus(Long tenantId, String orderNo, NoticeStatusEnum noticeStatusEnum);
 
 }

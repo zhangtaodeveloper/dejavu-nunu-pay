@@ -16,9 +16,11 @@ public class NoticeEntity {
     @TableId(type = IdType.ID_WORKER)
     private Long id;
 
-    private String context;
-
     private Long tenantId;
+
+    private String orderNo;
+    
+    private String context;
 
     private NoticeStatusEnum status;
 

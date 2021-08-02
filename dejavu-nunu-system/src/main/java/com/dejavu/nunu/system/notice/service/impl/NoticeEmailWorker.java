@@ -1,32 +1,19 @@
 package com.dejavu.nunu.system.notice.service.impl;
 
-import cn.hutool.core.lang.Dict;
 import cn.hutool.extra.mail.MailAccount;
-import cn.hutool.extra.template.Template;
-import cn.hutool.extra.template.TemplateConfig;
-import cn.hutool.extra.template.TemplateEngine;
-import cn.hutool.extra.template.TemplateUtil;
-import cn.hutool.extra.template.engine.freemarker.FreemarkerEngine;
 import com.dejavu.nunu.config.NoticeProperties;
 import com.dejavu.nunu.core.utils.EmailUtil;
-import com.dejavu.nunu.system.payment.entity.PaymentEntity;
-import com.dejavu.nunu.system.tenant.entity.TenantEntity;
+import com.dejavu.nunu.system.notice.constant.NoticeStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NoticeEmailWorker implements Runnable {
 
 
-    private TenantEntity tenantEntity;
+    private final NoticeEmailContext noticeEmailContext;
 
-    private PaymentEntity paymentEntity;
-
-    private NoticeProperties noticeProperties;
-
-    public NoticeEmailWorker(TenantEntity tenantEntity, PaymentEntity paymentEntity, NoticeProperties noticeProperties) {
-        this.tenantEntity = tenantEntity;
-        this.paymentEntity = paymentEntity;
-        this.noticeProperties = noticeProperties;
+    public NoticeEmailWorker(NoticeEmailContext noticeEmailContext) {
+        this.noticeEmailContext = noticeEmailContext;
     }
 
     @Override
@@ -40,7 +27,7 @@ public class NoticeEmailWorker implements Runnable {
 
     private void sendEmail() throws Exception {
 
-        NoticeProperties.Email email = noticeProperties.getEmail();
+        NoticeProperties.Email email = noticeEmailContext.getNoticeProperties().getEmail();
 
         MailAccount mailAccount = new MailAccount();
         mailAccount.setHost(email.getHost());
@@ -50,19 +37,15 @@ public class NoticeEmailWorker implements Runnable {
         mailAccount.setPass(email.getPass());
         mailAccount.setFrom(email.getFrom());
 
-        String title = "确认收款通知-订单号：" + paymentEntity.getOrderNo();
+        String title = "确认收款通知-订单号：" + noticeEmailContext.getPaymentEntity().getOrderNo();
 
-        String toEmailAddress = tenantEntity.getEmail();
+        String toEmailAddress = noticeEmailContext.getTenantEntity().getEmail();
 
-        TemplateConfig templateConfig = new TemplateConfig("/template", TemplateConfig.ResourceMode.CLASSPATH);
-        templateConfig.setCustomEngine(FreemarkerEngine.class);
+        EmailUtil.sendHtml(mailAccount, toEmailAddress, title, noticeEmailContext.getContext());
 
-        TemplateEngine engine = TemplateUtil.createEngine(templateConfig);
-        Template template = engine.getTemplate("EmailTemplate.html");
-        String result = template.render(Dict.create().set("tenantId", tenantEntity.getId()).set("tenantName", tenantEntity.getName()));
-
-        EmailUtil.sendHtml(mailAccount, toEmailAddress, title, result);
-
+        noticeEmailContext.getNoticeService().updateStatus(noticeEmailContext.getTenantEntity().getId(),
+                noticeEmailContext.getPaymentEntity().getOrderNo(),
+                NoticeStatusEnum.SUCCESS_SEND);
 
     }
 
