@@ -19,6 +19,8 @@ public class TenantEntity {
 
     private String apiKey;
 
+    private String email;
+
     private Date createdTime;
 
     private Date updatedTime;

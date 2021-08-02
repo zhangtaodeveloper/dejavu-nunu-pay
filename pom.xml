@@ -39,6 +39,8 @@
         <com.github.xiaoymin.swagger.ui.version>1.9.6</com.github.xiaoymin.swagger.ui.version>
         <cn.hutool.version>5.5.0</cn.hutool.version>
         <com.alicp.jetcache.version>2.6.0</com.alicp.jetcache.version>
+        <com.sun.mail>1.6.2</com.sun.mail>
+        <org.freemarker>2.3.31</org.freemarker>
 
     </properties>
 
@@ -142,6 +144,12 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${cn.hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${com.sun.mail}</version>
             </dependency>
 
         </dependencies>

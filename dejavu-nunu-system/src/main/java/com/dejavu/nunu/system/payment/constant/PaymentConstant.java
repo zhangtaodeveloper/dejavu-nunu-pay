@@ -10,6 +10,11 @@ public interface PaymentConstant {
          */
         String CREATE = "create";
 
+        /**
+         * 创建
+         */
+        String CONFIRM = "confirm";
+
     }
 
 }

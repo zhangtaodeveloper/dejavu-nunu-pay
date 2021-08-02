@@ -28,9 +28,13 @@ public class PaymentController {
         if (null == tenantId || tenantId <= 0) {
             return Result.fail();
         }
-        //创建订单
+        //创建支付信息
         if (PaymentConstant.Type.CREATE.equals(type)) {
             paymentService.create(paymentBaseBo);
+        }
+        //确认支付信息
+        if (PaymentConstant.Type.CONFIRM.equals(type)) {
+            paymentService.confirm(paymentBaseBo);
         }
         return Result.success();
     }

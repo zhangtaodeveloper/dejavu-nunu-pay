@@ -3,6 +3,7 @@ package com.dejavu.nunu.system;
 import com.dejavu.nunu.core.utils.SecurityUtil;
 import com.dejavu.nunu.system.payment.entity.PaymentEntity;
 import com.dejavu.nunu.system.payment.model.PaymentBaseBo;
+import com.dejavu.nunu.system.payment.model.PaymentConfirmBo;
 import com.dejavu.nunu.system.payment.model.PaymentCreateBo;
 import com.dejavu.nunu.system.payment.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,23 @@ public class PaymentServiceTest extends TestCore {
         paymentBaseBo.setContext(encrypt);
 
         paymentService.create(paymentBaseBo);
+    }
+
+    @Test
+    public void testConfirm() {
+
+        PaymentConfirmBo paymentConfirmBo = new PaymentConfirmBo();
+        paymentConfirmBo.setOrderNo("NO:00000001");
+
+        String encrypt = SecurityUtil.encrypt("1a0b5f07fda845929e87e48f931d566a", paymentConfirmBo);
+
+        log.info(encrypt);
+
+        PaymentBaseBo paymentBaseBo = new PaymentBaseBo();
+        paymentBaseBo.setTenantId(666666L);
+        paymentBaseBo.setContext(encrypt);
+
+        paymentService.confirm(paymentBaseBo);
     }
 
 

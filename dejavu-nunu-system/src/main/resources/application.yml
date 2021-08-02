@@ -36,7 +36,8 @@ spring:
 # MyBatis Plus configuration
 mybatis-plus:
   mapper-locations: classpath:/mapper/*/*Mapper.xml
-  type-aliases-package: com.mcu32.cbmp.task.ucenter.*.entity
+  type-aliases-package: com.dejavu.nunu.system.*.entity
+  type-enums-package: com.dejavu.nunu.system.*.constant
   configuration:
     map-underscore-to-camel-case: true
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
@@ -47,6 +48,16 @@ mybatis-plus:
       #逻辑删除配置
       logic-delete-value: "1"
       logic-not-delete-value: "0"
+
+notice:
+  email:
+    host: smtp.qq.com
+    port: 587
+    auth: true
+    from: 912340449@qq.com
+    user: 912340449
+    pass: ibftzqntvjkpbbhe
+
 
 logging:
   level:

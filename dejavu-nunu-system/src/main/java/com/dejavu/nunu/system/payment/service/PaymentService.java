@@ -8,9 +8,26 @@ public interface PaymentService extends IService<PaymentEntity> {
 
 
     /**
-     * 创建订单
-     * （需幂等）
+     * 创建支付信息
+     * （幂等）
+     *
      * @param paymentBaseBo
      */
     void create(PaymentBaseBo paymentBaseBo);
+
+    /**
+     * 确认支付信息
+     * （幂等）
+     *
+     * @param paymentBaseBo
+     */
+    void confirm(PaymentBaseBo paymentBaseBo);
+
+    /**
+     * 查询支付记录
+     *
+     * @param orderNo 根据订单编号查询
+     * @return
+     */
+    PaymentEntity getByOrderNo(String orderNo);
 }
