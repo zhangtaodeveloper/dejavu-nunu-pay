@@ -1,4 +1,4 @@
-package com.dejavu.nunu.system;
+package com.dejavu.nunu.system.notice.service.impl;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.extra.mail.MailAccount;
@@ -9,23 +9,36 @@ import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.extra.template.engine.freemarker.FreemarkerEngine;
 import com.dejavu.nunu.config.NoticeProperties;
 import com.dejavu.nunu.core.utils.EmailUtil;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dejavu.nunu.system.payment.entity.PaymentEntity;
+import com.dejavu.nunu.system.tenant.entity.TenantEntity;
+import lombok.extern.slf4j.Slf4j;
 
-public class NoticePropertiesTest extends TestCore {
+@Slf4j
+public class NoticeEmailWorker implements Runnable {
 
 
-    @Autowired
+    private TenantEntity tenantEntity;
+
+    private PaymentEntity paymentEntity;
+
     private NoticeProperties noticeProperties;
 
-    @Test
-    public void getValueTest() {
-        System.out.println(noticeProperties.getEmail().getUser());
+    public NoticeEmailWorker(TenantEntity tenantEntity, PaymentEntity paymentEntity, NoticeProperties noticeProperties) {
+        this.tenantEntity = tenantEntity;
+        this.paymentEntity = paymentEntity;
+        this.noticeProperties = noticeProperties;
     }
 
+    @Override
+    public void run() {
+        try {
+            this.sendEmail();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 
-    @Test
-    public void sendTest() throws Exception {
+    private void sendEmail() throws Exception {
 
         NoticeProperties.Email email = noticeProperties.getEmail();
 
@@ -37,32 +50,19 @@ public class NoticePropertiesTest extends TestCore {
         mailAccount.setPass(email.getPass());
         mailAccount.setFrom(email.getFrom());
 
-        EmailUtil.send(mailAccount, "zhangtaodeveloper@163.com", "测试标题", "测试内容");
+        String title = "确认收款通知-订单号：" + paymentEntity.getOrderNo();
 
-    }
-
-    @Test
-    public void sendHtmlTest() throws Exception {
+        String toEmailAddress = tenantEntity.getEmail();
 
         TemplateConfig templateConfig = new TemplateConfig("/template", TemplateConfig.ResourceMode.CLASSPATH);
         templateConfig.setCustomEngine(FreemarkerEngine.class);
 
         TemplateEngine engine = TemplateUtil.createEngine(templateConfig);
         Template template = engine.getTemplate("EmailTemplate.html");
-        String result = template.render(Dict.create().set("tenantId", "666666"));
+        String result = template.render(Dict.create().set("tenantId", tenantEntity.getId()).set("tenantName", tenantEntity.getName()));
 
-        NoticeProperties.Email email = noticeProperties.getEmail();
+        EmailUtil.sendHtml(mailAccount, toEmailAddress, title, result);
 
-        MailAccount mailAccount = new MailAccount();
-        mailAccount.setHost(email.getHost());
-        mailAccount.setPort(email.getPort());
-        mailAccount.setAuth(email.getAuth());
-        mailAccount.setUser(email.getUser());
-        mailAccount.setPass(email.getPass());
-        mailAccount.setFrom(email.getFrom());
-
-
-        EmailUtil.sendHtml(mailAccount, "zhangtaodeveloper@163.com", "测试标题", result);
 
     }
 
